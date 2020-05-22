@@ -1,0 +1,19 @@
+https://www.baeldung.com/curl-rest
+# add a user
+curl -d '{"blogs":[],"username":"mluukkai","name":"MattiLuukkainen","password":"sekret"}' -H 'Content-Type: application/json' localhost:3003/api/users
+
+# post a bitch
+curl -d '{"_id":"5a422a851b54a676234d17f7","title":" changed React patterns","author":"Chan","url":"https://reactdickpatterns.com/","likes":7,"__v":0}' -H 'Content-Type: application/json' localhost:3003/api/blogs
+
+# post a bitch with some user
+curl -d '{"title":" changed again again React patterns","author":"Chantelley","url":"https://reactdickpartteerns.com/","likes":7,"__v":0,"user":"5ebce81de9ef6c5a91374514"}' -H 'Content-Type: application/json' localhost:3003/api/blogs
+
+# login
+curl -d '{"username":"mluukkai","password":"sekret"}' -H 'Content-Type: application/json' localhost:3003/api/login
+
+# post a bitch with a logged in user
+curl -d '{"title":"a blog from a logged in user","author":"noman","url":"www.nope.com","likes":5}' -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI1ZWJjZTgxZGU5ZWY2YzVhOTEzNzQ1MTQiLCJpYXQiOjE1ODk0NjA3NDR9.dmotLybw-1mFxdBymwth9FGv8maQyxYFSCuFqIehKkA' localhost:3003/api/blogs
+
+
+# get a bitch
+curl -v localhost:3003/api/blogs
