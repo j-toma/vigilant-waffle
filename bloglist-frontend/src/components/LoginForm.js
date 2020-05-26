@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import blogService from '../services/blog'
 import commentService from '../services/comment'
+//import likeService from '../services/comment'
 import { loginUser } from '../reducers/loginReducer'
 import { Form, Button } from 'react-bootstrap'
 
@@ -23,6 +24,7 @@ let LoginForm = props => {
     window.localStorage.setItem('blogListUser', JSON.stringify(user))
     blogService.setToken(user.token)
     commentService.setToken(user.token)
+ //   likeService.setToken(user.token)
     //props.history.push('/')
   }
 

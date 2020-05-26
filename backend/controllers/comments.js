@@ -29,6 +29,7 @@ commentsRouter.get('/', async (request, response) => {
 //})
 
 commentsRouter.post('/', async (request, response, next) => {
+  //logger.info('comment router request token:', request.token)
 
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -39,6 +40,9 @@ commentsRouter.post('/', async (request, response, next) => {
     if (!body.content) {
       return response.status(400).end()
     }
+    //logger.info('request.params.id:', request.params.id)
+    //logger.info('decodedToken.id:', decodedToken.id)
+
     const user = await User.findById(decodedToken.id)
     const blog = await Blog.findById(body.blog)
     const comment = new Comment({
@@ -47,7 +51,7 @@ commentsRouter.post('/', async (request, response, next) => {
       user: user._id,
     })
     let savedComment = await comment.save()
-    logger.info('savedComment._id:', savedComment._id)
+    //logger.info('savedComment._id:', savedComment._id)
 
     blog.comments = blog.comments.concat(savedComment._id)
     //await blog.save()

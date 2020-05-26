@@ -8,6 +8,10 @@ const usersReducer = (state=[], action) => {
     return [...action.data]
   case 'USER_ADD_COMMENT':
     return [...action.data]
+  case 'USER_LIKE_BLOG':
+    return [...action.data]
+  case 'USER_REMOVE_BLOG':
+    return [...action.data]
   default:
     return state
   }

@@ -7,6 +7,7 @@ usersRouter.get('/', async (request, response) => {
     .find({})
     .populate('blogs', { title: 1, author: 1 })
     .populate('comments', { content: 1 })
+    .populate('likedBlogs', { title: 1 })
   response.json(users.map(u => u.toJSON()))
 })
 
@@ -32,6 +33,7 @@ usersRouter.post('/', async (request, response, next) => {
     const user = new User({
       username:username,
       name:name,
+      likedBlogs:[],
       passwordHash
     })
     const savedUser = await user.save()

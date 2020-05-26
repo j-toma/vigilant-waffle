@@ -8,6 +8,8 @@ const commentReducer = (state=[], action) => {
       return [...action.data]
     case 'CREATE_COMMENT':
       return [...state, action.data]
+    case 'USER_ADD_LIKE':
+      return [...action.data]
     default:
       return state
     }

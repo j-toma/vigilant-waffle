@@ -4,9 +4,11 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { initialiseBlogs } from './reducers/blogReducer' 
 import { initialiseUsers } from './reducers/userReducer'
 import { initialiseComments } from './reducers/commentReducer'
+//import { initialiseLikes } from './reducers/likeReducer'
 import { setUser } from './reducers/loginReducer'
 import blogService from './services/blog'
 import commentService from './services/comment'
+import likeService from './services/like'
 
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -39,6 +41,7 @@ const App = (props) => {
     props.initialiseBlogs()
     props.initialiseUsers()
     props.initialiseComments()
+ //   props.initialiseLikes()
   }, [props])
 
   useEffect(() => {
@@ -48,9 +51,54 @@ const App = (props) => {
       props.setUser(user)
       commentService.setToken(user.token)
       blogService.setToken(user.token)
+  //    likeService.setToken(user.token)
     }
   }, [])
 
+  return (
+    <Container>
+      <BrowserRouter>
+        <div>
+          <Heading text="Blog Application" type="h1" />
+          <Notification />
+          { props.user === null ?
+            <LoginForm /> :
+            (
+              <>
+                <Menu />
+                <Route path="/login" render={() => <LoginForm />} />
+                <Route exact path="/" render={() => <BlogList />} />
+                <Route path="/blogs/:id" render={({match}) => <Blog blog={match.params.id} />} />
+                <Route exact path="/users" render={() => <Users />} />
+                <Route path="/users/:id" render={({match}) => <User user={match.params.id} />} />
+                <Route path="/create" render={() => <BlogForm />} />
+              </>
+            )
+          }
+        </div>
+      </BrowserRouter>
+    </Container>
+
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+    }
+}
+
+const mapDispatchToProps = {
+  initialiseBlogs,
+  initialiseUsers,
+  initialiseComments,
+  //initialiseLikes,
+  setUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
+//export default App
+//
   //const handleLogout = () => {
   //  window.localStorage.removeItem('loggedBlogappUser')
   //  setUser(null)
@@ -128,45 +176,3 @@ const App = (props) => {
   //  setTimeout(() => setNotification({}),5000)
   //}
 
-  return (
-    <Container>
-      <BrowserRouter>
-        <div>
-          <Heading text="Blog Application" type="h1" />
-          <Notification />
-          { props.user === null ?
-            <LoginForm /> :
-            (
-              <>
-                <Menu />
-                <Route path="/login" render={() => <LoginForm />} />
-                <Route exact path="/" render={() => <BlogList />} />
-                <Route path="/blogs/:id" render={({match}) => <Blog blog={match.params.id} />} />
-                <Route exact path="/users" render={() => <Users />} />
-                <Route path="/users/:id" render={({match}) => <User user={match.params.id} />} />
-                <Route path="/create" render={() => <BlogForm />} />
-              </>
-            )
-          }
-        </div>
-      </BrowserRouter>
-    </Container>
-
-  )
-}
-
-const mapStateToProps = state => {
-  return {
-    user: state.user
-    }
-}
-
-const mapDispatchToProps = {
-  initialiseBlogs,
-  initialiseUsers,
-  initialiseComments,
-  setUser
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
-//export default App

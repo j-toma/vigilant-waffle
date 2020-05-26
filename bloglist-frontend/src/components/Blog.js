@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Route, Link } from 'react-router-dom'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
+//import { likeBlog, removeBlog, unlikeBlog } from '../reducers/blogReducer'
+import { updateBlog, removeBlog } from '../reducers/blogReducer'
+import { addLike, removeLike } from '../reducers/likeReducer'
 import Heading from './Heading'
 import Comments from './Comments'
 import CommentForm from './CommentForm'
@@ -12,15 +14,24 @@ let Blog = props => {
   console.log('props in Blog.js:',props)
   const blog = props.blogs.find(blog => blog.id === props.blog)
   const comments = blog.comments.map(x => x.id)
+  const likedBy = blog.likedBy.map(x => x.username)
+  //const blog.likedBy.includes(props.user.username)
   //const comments = props.comments.filter(comment => comment.blog === props.blog)
-  console.log('blog:',blog)
-  console.log('match:',props.match)
-  console.log('commnets:',comments)
   //const match = props.match
 
   const handleClick = (type, blog) => {
-    if  (type === 'like') props.likeBlog(blog)
-    else {
+    if  (type === 'like') {
+      console.log('in component Blog')
+      console.log('blog to submit, blog.id:', blog.id)
+      props.updateBlog(blog)
+    //} else if ( type === 'unlike') {
+    //  const likesOnBlog = props.likes.filter(x => x.blog.id === blog.id)
+    //  console.log('likes on blog:', likesOnBlog)
+    //  const likesWithUsername = likesOnBlog.find(x => x.user.username === props.user.username)
+    //  console.log('likes on blog with username:', likesWithUsername)
+    //  const like = likesWithUsername
+    //  props.removeLike(like)
+    } else {
       props.removeBlog(blog)
       props.history.push('/')
     }
@@ -39,7 +50,11 @@ let Blog = props => {
               More Info: <a href={blog.url} target="_blank" rel="noopener roreferrer">{blog.url}</a>
             </p>
             <div>
-              <Button variant="primary" onClick={() => handleClick('like', blog)}>Like</Button>
+              {
+                likedBy.includes(props.user.username)
+                ? <Button variant="primary" onClick={() => handleClick('like', blog)}>UnLike</Button>
+                : <Button variant="primary" onClick={() => handleClick('like', blog)}>Like</Button>
+              }
               {
                 blog.user.username === props.user.username
                 ? <Button variant="danger" onClick={() => handleClick('delete', blog)}>Delete</Button>
@@ -59,13 +74,18 @@ let Blog = props => {
 
 const mapStateToProps = state => {
   return {
+    //likes: state.likes,
     blogs: state.blogs,
     user: state.user
   }
 }
 
 const mapDispatchToProps = {
-  likeBlog,
+  updateBlog,
+  //addLike,
+  //removeLike,
+  //unlikeBlog,
+  //likeBlog,
   removeBlog
 }
 

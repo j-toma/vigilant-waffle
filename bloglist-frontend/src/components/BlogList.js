@@ -14,9 +14,9 @@ const BlogList = props => {
         <thead>
           <tr>
             <th>Title</th>
-            <th>author</th>
-            <th>Num. Comments</th>
-            <th>Num. Likes</th>
+            <th>Author</th>
+            <th>Number of Comments</th>
+            <th>Number of Likes</th>
           </tr>
         </thead>
         <tbody>
@@ -48,9 +48,9 @@ const BlogList = props => {
 
 const mapStateToProps = state => {
   return {
-    comments: state.comments,
     blogs: state.blogs,
-    users: state.users
+    users: state.users,
+    comments: state.comments
   }
 }
 

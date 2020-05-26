@@ -1,18 +1,18 @@
 import axios from 'axios'
-const baseUrl = '/api/comments'
+const baseUrl = '/api/likes'
 
 let token = null
 
 const setToken = newToken => {
   token = `bearer ${newToken}`
-  console.log('token in blog reducer set Token:', token)
+  console.log('token in like reducer setToken:', token)
 }
 
 const create = async newObject => {
   const config = {
     headers: { Authorization: token }
   }
-  console.log('token in blog reducer create:', token)
+  console.log('token in like reducer create:', token)
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
@@ -22,4 +22,12 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, setToken }
+const remove = (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.delete(`${baseUrl}/${id}`, config)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, setToken, remove }
